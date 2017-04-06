@@ -12,12 +12,14 @@ audio = pyaudio.PyAudio()
 stream = audio.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
 frames = []
 
-signal = stream.read(CHUNK)
-ft = np.fft.rfft(np.fromstring(signal, dtype=np.int16))
-ft = np.delete(ft, len(ft) - 1)
-amp = np.log10(np.abs(ft)) ** 2
-freqs = np.fft.rfftfreq(len(signal), d=1. / RATE)
-print amp
+while True:
+    signal = stream.read(CHUNK)
+    # print signal
+    ft = np.fft.rfft(np.fromstring(signal, dtype=np.int16))
+    ft = np.delete(ft, len(ft) - 1)
+    amp = np.log10(np.abs(ft)) ** 2
+    freqs = np.fft.rfftfreq(len(signal), d=1. / RATE)
+    print '\r', amp
 # for freq, val in zip(freqs, np.abs(ft)):
 #     print freq, val
 # print freqs
